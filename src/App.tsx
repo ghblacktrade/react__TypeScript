@@ -1,11 +1,18 @@
 import React from 'react';
+import Card from './components/Card'
+
 
 function App() {
   return (
     <div className="App">
-yeaaaah
+      <Card width='200px' height='200px'>
+          <button>
+KNOPKA
+          </button>
+      </Card>
     </div>
   );
 }
 
 export default App;
+
