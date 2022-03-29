@@ -1,16 +1,24 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Card, {CardVariant} from './components/Card'
 import UserList from "./components/UserList";
 import {IUser} from "./type/types";
+import axios from "axios";
 
 
 function App() {
+const [user, setUsers] = useState<IUser[]>([])
 
-    const users: IUser[] = [
-        {id: 1, name: 'Arseniy', email: 'gh.blacktrade.com', address: {city: 'Saint-Petersberg', street: 'Kazanskaya', zipcode: '43'}},
-        {id: 2, name: 'Valeria', email: 'gh.blacktrade.com', address: {city: 'Saint-Petersberg', street: 'Kazanskaya', zipcode: '43'}}
-
-    ]
+    useEffect(() => {
+fetchUsers()
+    }, [])
+    async function fetchUsers( ) {
+    try {
+        const response = await axios.get<IUser[]>('https://jsonplaceholder.typicode.com/users')
+        setUsers(response.data)
+    }catch (e) {
+        alert(e)
+    }
+    }
   return (
     <div className="App">
       <Card onclick={(num) => console.log('click', num)} variant={CardVariant.primary} width='200px' height='200px'>
@@ -18,7 +26,7 @@ function App() {
 KNOPKA
           </button>
       </Card>
-        <UserList users={  users } />
+        <UserList users={  user } />
     </div>
   );
 }
