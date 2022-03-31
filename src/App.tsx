@@ -1,32 +1,31 @@
-import React, {useEffect, useState} from 'react';
-import Card, {CardVariant} from './components/Card'
-import UserList from "./components/UserList";
-import {IUser} from "./type/types";
-import axios from "axios";
+import React, {useState} from 'react';
+import {ITodo} from "./types/data";
+import {TodoList} from "./components/TodoList";
 
 
-function App() {
-const [user, setUsers] = useState<IUser[]>([])
+const App: React.FC = ( ) => {
+  const [value, setValue] = useState(' ')
+  const [todos, setTodos] = useState<ITodo[]>([])
 
-    useEffect(() => {
-fetchUsers()
-    }, [])
-    async function fetchUsers( ) {
-    try {
-        const response = await axios.get<IUser[]>('https://jsonplaceholder.typicode.com/users')
-        setUsers(response.data)
-    }catch (e) {
-        alert(e)
+
+  const addTodo = () => {
+    if (value) {
+    setTodos([...todos, {
+      id: Date.now(),
+      title: value,
+      complete: false
+    }])
+      setValue( '')
     }
-    }
+  }
   return (
     <div className="App">
-      <Card onclick={(num) => console.log('click', num)} variant={CardVariant.primary} width='200px' height='200px'>
-          <button>
-KNOPKA
-          </button>
-      </Card>
-        <UserList users={  user } />
+      <div>
+        <input value={value} onChange={e => setValue(e.target.value)}/>
+        <button onClick={addTodo}>Add</button>
+        <TodoList items={todos} />
+      </div>
+
     </div>
   );
 }
